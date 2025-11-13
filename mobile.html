@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Homepage</title>
+    <link rel="icon" type="image/png" href="res/img/favicon.png">
+    <style>
+        @font-face {
+            font-family: 'Chicago';
+            src: url('res/font/CHICAGO.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Geneva';
+            src: url('res/font/Geneva.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Geneva", "Helvetica", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #000;
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            background: #d0d0d0;
+            border: 1px solid #000;
+            padding: 0;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .section-title-bar {
+            height: 22px;
+            background: #d0d0d0;
+            border-bottom: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                rgba(0,0,0,0.1) 1px,
+                rgba(0,0,0,0.1) 2px
+            );
+            z-index: 0;
+        }
+
+        .collapse-btn {
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #d0d0d0;
+            border: 1px solid #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) inset,
+                        -1px -1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .collapse-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .collapse-btn:active {
+            background: #b0b0b0;
+            box-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5) inset,
+                        1px 1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .section-title-bar h2 {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-size: 12px;
+            color: #000;
+            font-weight: bold;
+            margin: 0;
+            padding: 0 8px;
+            border: none;
+            background: #d0d0d0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-content {
+            padding: 20px;
+            display: block;
+            background: #fff;
+        }
+
+        .section.collapsed .section-content {
+            display: none;
+        }
+
+        .section.collapsed {
+            height: 23px;
+        }
+
+        .section::before {
+            display: none;
+        }
+
+        .section > *:first-child {
+            margin-top: 0;
+        }
+
+        .section h3 {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-size: 12px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .section p {
+            margin-bottom: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .section li {
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .carousel {
+            width: 100%;
+            max-width: 300px;
+            margin: 15px auto;
+            text-align: center;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 1px solid #000;
+            background: #fff;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .carousel-btn {
+            background: #d0d0d0;
+            color: #000;
+            border: 1px solid #000;
+            border-radius: 3px;
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 11px;
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-weight: bold;
+            box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) inset,
+                        -1px -1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .carousel-btn:active {
+            background: #b0b0b0;
+            box-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5) inset,
+                        1px 1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .carousel-counter {
+            font-size: 10px;
+            margin-top: 5px;
+            color: #000;
+            font-family: "Geneva", "Helvetica", sans-serif;
+        }
+
+        .photo-caption {
+            font-size: 10px;
+            font-style: italic;
+            margin-top: 5px;
+            color: #333;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        @media (min-width: 600px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .card {
+            background: #e8e8e8;
+            padding: 10px;
+            border: 1px solid #888;
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .card h4 {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-size: 11px;
+            margin-bottom: 6px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .card p {
+            font-size: 10px;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .card ul {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card li {
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .skill-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .skill-title {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .skill-desc {
+            font-size: 10px;
+            color: #333;
+        }
+
+        .project-card {
+            background: #e8e8e8;
+            padding: 12px;
+            border: 1px solid #888;
+            margin-bottom: 12px;
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card h3 {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .project-card p {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .contact-link {
+            display: inline-block;
+            background: #d0d0d0;
+            color: #000;
+            padding: 6px 14px;
+            text-decoration: none;
+            margin-top: 8px;
+            border: 1px solid #000;
+            border-radius: 3px;
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-weight: bold;
+            font-size: 11px;
+            box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) inset,
+                        -1px -1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .contact-link:active {
+            background: #b0b0b0;
+            box-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5) inset,
+                        1px 1px 0 rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .gym-split {
+            background: #e8e8e8;
+            padding: 12px;
+            border: 1px solid #888;
+            margin-top: 12px;
+            font-size: 11px;
+        }
+
+        .gym-split > div {
+            font-size: 11px;
+        }
+
+        .day-header {
+            font-family: "Chicago", "Charcoal", sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            text-decoration: underline;
+            color: #000;
+            font-size: 11px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            font-size: 11px;
+            font-family: "Chicago", "Charcoal", sans-serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .minecraft-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .minecraft-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #000;
+            background: #fff;
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- About Me Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>About Me</h2>
+            </div>
+            <div class="section-content">
+                <p>My name is <strong>Shreeyansh Pandey</strong>, welcome to my personal homepage!</p>
+                <p>I am a student at UCSD who likes cats, Minecraft, and biology.</p>
+                
+                <div class="carousel">
+                    <img src="res/img/me/me.png" alt="Photo of me">
+                    <div class="photo-caption">Me in Times Square</div>
+                </div>
+                
+                <p style="font-size: 13px; color: #666;">Feel free to explore the other windows to learn more about my interests, projects, and goals!</p>
+                
+                <p style="margin-top: 12px;"><a href="index.html" class="contact-link" style="font-size: 11px; padding: 4px 10px;">View Desktop Version</a></p>
+            </div>
+        </div>
+
+        <!-- Chicken the Cat Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>Chicken the Cat</h2>
+            </div>
+            <div class="section-content">
+                <div class="carousel">
+                    <img id="chickenImg" src="res/img/chicken/1.png" alt="Chicken the cat">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" onclick="previousChicken()">◀ Previous</button>
+                        <button class="carousel-btn" onclick="nextChicken()">Next ▶</button>
+                    </div>
+                    <div class="carousel-counter" id="chickenCounter">1 / 10</div>
+                    <div class="photo-caption">Chicken, our beloved and slightly rotund cat</div>
+                </div>
+                
+                <p>We didn't get Chicken like most people get their cats. He used to be our neighborhood stray, eating what people gave him.</p>
+                
+                <p>When the COVID lockdown happened, we began to spend a lot more time with him. He started living outside our house all day. Eventually, he ventured indoors and chose us to be his family.</p>
+                
+                <p>He still roams around outside every day despite being pretty old now.</p>
+            </div>
+        </div>
+
+        <!-- Interests Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>My Interests</h2>
+            </div>
+            <div class="section-content">
+            
+            <h3>📝 Science Communication</h3>
+            <p>I enjoy translating complex scientific concepts into accessible content, understandable for broader audiences. Effective science communication is essential for public health literacy and helps bridge the gap between research and public understanding.</p>
+            
+            <h3>👕 Fast Fashion & Environmental Health</h3>
+            <p>Working on a collaborative research study examining the environmental and health impacts of fast fashion among San Diego students. Our team is targeting pediatricians to raise awareness about textile-related health concerns, particularly focusing on how microplastics and chemical exposures from synthetic clothing affect children's health. We are presenting our findings as a poster at an upcoming conference. This interdisciplinary project combines public health policy, environmental science, and community outreach.</p>
+            
+            <h3>🌍 Global Health Policy</h3>
+            <p>I'm deeply interested in international health governance and have written analytical pieces on PEPFAR policies and global health initiatives. Understanding how policy decisions affect healthcare delivery on a global scale is crucial to creating equitable health systems.</p>
+            
+            <h3>🧬 Oncology Research</h3>
+            <p>I'm passionate about cancer research and aspire to become an oncologist who views healthcare as both science and advocacy. I've written about Notch signaling pathways and their implications in cancer treatment, exploring how these molecular mechanisms can inform therapeutic approaches.</p>
+            
+            <h3>🦠 Microbiomes in Medicine</h3>
+            <p>The overall neglect of microbiomes in medicine until recently means we have lots to rediscover. I'm fascinated by the microbiome-cancer relationship and how understanding these complex ecosystems can lead to new treatment approaches and insights into disease prevention.</p>
+            
+            <h3>🎻 Music & Teaching</h3>
+            <p>Outside of science, I play violin and enjoy teaching music. There's something special about helping others discover their musical abilities and watching their progress over time.</p>
+            
+            <h3>✍️ Creativity & Web Design</h3>
+            <p>I balance my scientific pursuits with creative outlets like writing and web design. This website is a testament to my interest in blending retro aesthetics with modern functionality!</p>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>My Skills</h2>
+            </div>
+            <div class="section-content">
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Tools and technologies I use</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="skill-icon">🌐</div>
+                    <div class="skill-title">HTML/CSS</div>
+                    <div class="skill-desc">Used to create this website!</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">⚡</div>
+                    <div class="skill-title">JavaScript</div>
+                    <div class="skill-desc">I use it to make fun little projects</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">🤖</div>
+                    <div class="skill-title">Discord.py</div>
+                    <div class="skill-desc">My bot "Nut" peaked at 40k users</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">📊</div>
+                    <div class="skill-title">R</div>
+                    <div class="skill-desc">Useful for statistical analysis in bio</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">🐍</div>
+                    <div class="skill-title">Python</div>
+                    <div class="skill-desc">General programming and data analysis</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">🧬</div>
+                    <div class="skill-title">Biology</div>
+                    <div class="skill-desc">Research and clinical knowledge</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">💉</div>
+                    <div class="skill-title">Medical Training</div>
+                    <div class="skill-desc">Future EMT & physician skills</div>
+                </div>
+                
+                <div class="card">
+                    <div class="skill-icon">🔍</div>
+                    <div class="skill-title">Research</div>
+                    <div class="skill-desc">Scientific inquiry and analysis</div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>My Projects</h2>
+            </div>
+            <div class="section-content">
+            
+            <div class="project-card">
+                <h3>🌐 This Website</h3>
+                <p>A Mac OS 9-styled personal homepage built with HTML, CSS, and JavaScript featuring draggable windows and authentic retro design.</p>
+            </div>
+            
+            <div class="project-card">
+                <h3>🤖 Nut Discord Bot</h3>
+                <p>A Discord bot built with Discord.py that peaked at 40,000 users. Currently unmaintained but was a great learning experience.</p>
+                <a href="https://top.gg/bot/780971224146640926" target="_blank" class="contact-link" style="font-size: 14px; padding: 8px 16px;">View on top.gg</a>
+            </div>
+            
+            <div class="project-card">
+                <h3>✅ tasQer</h3>
+                <p>A task management web app with sorting, completion tracking, and import/export functionality. Built with vanilla JavaScript and Bootstrap.</p>
+            </div>
+            
+            <div class="project-card">
+                <h3>🔤 Yurdle</h3>
+                <p>A Wordle clone where you guess 5-letter words in 6 tries. Color-coded feedback helps you narrow down the answer!</p>
+            </div>
+            
+            <div class="project-card">
+                <h3>📦 Beta Bukkit Archive</h3>
+                <p>The largest centralized archive of Bukkit plugins for Minecraft Beta. Will organize for public access eventually!</p>
+            </div>
+            </div>
+        </div>
+
+        <!-- Studies and Goals Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>Studies and Goals</h2>
+            </div>
+            <div class="section-content">
+            
+            <p><strong>Current Studies:</strong></p>
+            <p>I am a Human Biology student at UCSD ERC. I just started my first quarter of my freshman year and I am settling in decently well.</p>
+            
+            <p><strong>Career Goals:</strong></p>
+            <p>My goal is to become an oncologist or cardiologist, but I don't really know yet. Maybe I'll do research. The path is still unfolding!</p>
+            
+            <p><strong>Immediate To-Dos:</strong></p>
+            <ul>
+                <li>Find research opportunities</li>
+                <li>Start volunteering</li>
+                <li>Get my EMT certificate</li>
+            </ul>
+            
+            <p><strong>Other Passions:</strong></p>
+            <p>I used to play the violin but stopped when I injured my back. I want to approach it with renewed feeling for the art.</p>
+            <p>I also like literature. Currently I am reading Hermann Hesse's <em>Siddhartha</em>.</p>
+            <p>My favorite authors are <strong>Toni Morrison</strong> (for what she addresses and how she does it in a refreshing way) and <strong>Jane Austen</strong> (I like comedies of manners and I think she is a master of satire).</p>
+            </div>
+        </div>
+
+        <!-- Gym & Fitness Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>Gym & Fitness</h2>
+            </div>
+            <div class="section-content">
+            
+            <p><strong>Current Program:</strong></p>
+            <p>I am currently running a PPL/Arnold split</p>
+            
+            <div class="gym-split">
+                <div class="day-header">Push (Day 1)</div>
+                <div>Incline Barbell Bench 3x6-8</div>
+                <div>Dip 2x6-10</div>
+                <div>Dumbbell Shoulder Press 2x8-10</div>
+                <div>Cable Tricep Kickback 2x8-10</div>
+                <div>Pec Deck 2x6-8</div>
+                <div>Dragon Flag 2x10-12</div>
+                <div>Decline Sit-Up 2x10-12</div>
+                
+                <div class="day-header">Pull (Day 2)</div>
+                <div>T-Bar Mid Row 2x6-8</div>
+                <div>Pull Up (Normal) 2x6-8</div>
+                <div>High Row 2x6-8</div>
+                <div>Rear Delt Fly 3x8-10</div>
+                <div>Cable Lat Raise 3x8-10</div>
+                <div>Bayesian Curl 2x8-10</div>
+                <div>Hammer Curl 2x8-10</div>
+                
+                <div class="day-header">Legs (Day 3)</div>
+                <div>Lying Hamstring Curl 2x6-8</div>
+                <div>RDL 2x6-8</div>
+                <div>Squat 3x6-8</div>
+                <div>Leg Extension 2x6-8</div>
+                <div>Abductor Machine 2x8-12</div>
+                <div>Calf Raise 2x8-12</div>
+                <div>Leg Raise 2x10-12</div>
+                <div>Decline Sit-Up 2x10-12</div>
+                
+                <div class="day-header">Rest (Day 4)</div>
+                
+                <div class="day-header">Chest/Back (Day 5)</div>
+                <div>Incline Dumbbell Bench 2x6-8</div>
+                <div>Pull Up (Wide) 2x6-8</div>
+                <div>T-Bar Row 2x6-8</div>
+                <div>Dumbbell Pullover 2x6-8</div>
+                <div>High Row 2x6-8</div>
+                <div>Pec Deck 2x6-8</div>
+                <div>Leg Raise 2x10-12</div>
+                <div>Decline Sit-Up 2x10-12</div>
+                
+                <div class="day-header">Shoulders/Arms (Day 6)</div>
+                <div>All exercises 2x8-10:</div>
+                <div>• Lat Raise</div>
+                <div>• Rear Delt Cable Fly</div>
+                <div>• Cable Tricep Kickback</div>
+                <div>• Preacher Curl</div>
+                <div>• Skullcrusher</div>
+                <div>• Dumbbell Overhead Press</div>
+                <div>• Behind the Head Barbell Press</div>
+                <div>• Crossbody Hammer Curl</div>
+                
+                <div class="day-header">Rest (Day 7)</div>
+            </div>
+            
+            <p style="margin-top: 16px;"><strong>Current Stats:</strong></p>
+            <ul>
+                <li>Bench: 180 lb</li>
+                <li>Squat: 290 lb</li>
+                <li>Deadlift: 290 lb</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- Minecraft Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>Minecraft</h2>
+            </div>
+            <div class="section-content">
+            
+            <p>I play a mixture of modern and Beta Minecraft, each offering unique experiences.</p>
+            
+            <h3>⚔️ PvP Days</h3>
+            <p>I used to do PvP on Hypixel and reached <strong>Sumo Master V</strong> until there were too many bots to keep going.</p>
+            <img src="res/img/minecraft/pvp.png" alt="PvP" style="width: 100%; max-width: 400px; margin: 10px auto; display: block; border: 1px solid #000; background: #fff;">
+            
+            <h3>🏠 SMP Experience</h3>
+            <p>My favorite SMP experience was with my friends on a server I hosted. The community and shared builds made it special.</p>
+            <img src="res/img/minecraft/smp1.png" alt="SMP" style="width: 100%; max-width: 400px; margin: 10px auto; display: block; border: 1px solid #000; background: #fff;">
+            
+            <h3>🏗️ Building</h3>
+            <p>I like to build in both Beta and modern Minecraft.</p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;">
+                <img src="res/img/minecraft/build1.png" alt="Build 1" style="width: 100%; height: 100px; object-fit: cover; border: 1px solid #000; background: #fff;">
+                <img src="res/img/minecraft/build2.png" alt="Build 2" style="width: 100%; height: 100px; object-fit: cover; border: 1px solid #000; background: #fff;">
+                <img src="res/img/minecraft/build3.png" alt="Build 3" style="width: 100%; height: 100px; object-fit: cover; border: 1px solid #000; background: #fff;">
+            </div>
+            
+            <h3>🎮 Beta Minecraft</h3>
+            <p>I play Beta when I want to slow things down for a change of pace.</p>
+            <div class="minecraft-grid">
+                <img src="res/img/minecraft/beta1.png" alt="Beta 1">
+                <img src="res/img/minecraft/beta2.png" alt="Beta 2">
+                <img src="res/img/minecraft/beta3.png" alt="Beta 3">
+                <img src="res/img/minecraft/beta4.png" alt="Beta 4">
+            </div>
+            
+            <h3>📦 Beta Bukkit Archive</h3>
+            <p>I possess the largest centralized archive of Bukkit plugins for Beta and will get around to organizing them one day for people to see!</p>
+            </div>
+        </div>
+
+        <!-- Retro Gaming Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>NES & SNES Gaming</h2>
+            </div>
+            <div class="section-content">
+                <div class="carousel">
+                    <img id="nesImg" src="res/img/nes/nes1.png" alt="NES Gaming">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" onclick="previousNes()">◀ Previous</button>
+                        <button class="carousel-btn" onclick="nextNes()">Next ▶</button>
+                    </div>
+                    <div class="carousel-counter" id="nesCounter">1 / 9</div>
+                </div>
+                
+                <p>I love playing classic NES and SNES games. There's something special about the simplicity and challenge of these retro titles.</p>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="section">
+            <div class="section-title-bar">
+                <div class="collapse-btn" onclick="toggleSection(this)">□</div>
+                <h2>📧 Contact Me</h2>
+            </div>
+            <div class="section-content">
+                <p>Click the button below to send me an email!</p>
+                <p style="font-weight: bold; margin-bottom: 10px;">shreeyanshp@aol.com</p>
+                <a href="mailto:shreeyanshp@aol.com" class="contact-link">Send Mail</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025</p>
+    </div>
+
+    <script>
+        // Toggle section collapse
+        function toggleSection(btn) {
+            const section = btn.closest('.section');
+            section.classList.toggle('collapsed');
+        }
+
+        // Chicken carousel
+        let chickenIndex = 1;
+        const totalChicken = 10;
+
+        function updateChicken() {
+            document.getElementById('chickenImg').src = `res/img/chicken/${chickenIndex}.png`;
+            document.getElementById('chickenCounter').textContent = `${chickenIndex} / ${totalChicken}`;
+        }
+
+        function nextChicken() {
+            chickenIndex = chickenIndex >= totalChicken ? 1 : chickenIndex + 1;
+            updateChicken();
+        }
+
+        function previousChicken() {
+            chickenIndex = chickenIndex <= 1 ? totalChicken : chickenIndex - 1;
+            updateChicken();
+        }
+
+        // NES carousel
+        let nesIndex = 1;
+        const totalNes = 9;
+
+        function updateNes() {
+            document.getElementById('nesImg').src = `res/img/nes/nes${nesIndex}.png`;
+            document.getElementById('nesCounter').textContent = `${nesIndex} / ${totalNes}`;
+        }
+
+        function nextNes() {
+            nesIndex = nesIndex >= totalNes ? 1 : nesIndex + 1;
+            updateNes();
+        }
+
+        function previousNes() {
+            nesIndex = nesIndex <= 1 ? totalNes : nesIndex - 1;
+            updateNes();
+        }
+    </script>
+</body>
+</html>
